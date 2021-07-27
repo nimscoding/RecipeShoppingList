@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import Recipe from "./Components/Recipe";
-import { Irecipe } from "./types";
+import { Irecipe, shoppingList as shoppingListType } from "./types";
 
 import { useState } from "react";
 import "./App.css";
@@ -12,7 +12,7 @@ function App() {
 
   const [recipes, setRecipes] = useState<Irecipe[]>([]);
   const [recipeQuery, setRecipeQuery] = useState(" ");
-  const [shoppingList, setShoppingList] = useState<string[]>([]);
+  const [shoppingList, setShoppingList] = useState<shoppingListType>([]);
 
   const SearchRecipes = async () => {
     const response = await axios.get(
@@ -31,9 +31,7 @@ function App() {
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRecipeQuery(e.target.value);
   };
-
   console.log(recipes);
-
   return (
     <div className="App">
       <h1 onClick={SearchRecipes}>IngrediList</h1>
@@ -60,3 +58,52 @@ function App() {
 }
 
 export default App;
+
+
+import React from "react";
+import { Irecipe, shoppingList, setShoppingList } from "../types";
+
+const Recipe = (props: {
+  recipe: Irecipe;
+  shoppingList: shoppingList;
+  setShoppingList: setShoppingList;
+}) => {
+  const { recipe } = props;
+
+  return (
+    <div className="recipe">
+      <img src={recipe.recipe.image} alt={recipe.recipe.label} />
+      <p>{recipe.recipe.label}</p>
+    </div>
+  );
+};
+
+export default Recipe;
+
+
+
+    export  interface Irecipe {
+        recipe : {
+            url:string
+            label: string;
+            image: string;
+            calories: string;
+            dishType: string;
+            ingredients: {
+                text: string;
+            }
+        }
+
+    }
+
+    export type shoppingList = string[];
+    export type setShoppingList = React.Dispatch<React.SetStateAction<string[]>>;
+
+    
+
+
+
+
+
+
+
